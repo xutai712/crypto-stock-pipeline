@@ -22,7 +22,7 @@ A data engineering project that pulls daily price data for cryptocurrency and st
 
 ## Planned Tech Stack
 - **Python** — data fetching and pipeline scripting
-- **mySQL** — database storage
+- **MySQL** — database storage
 - **dbt** — data transformation and modeling
 - **Apache Airflow** — pipeline scheduling and orchestration
 - **Docker** — containerization
