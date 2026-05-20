@@ -30,9 +30,9 @@ A data engineering project that pulls daily price data for cryptocurrency and st
 - **Streamlit** — dashboard and visualization
 
 ## Roadmap
-- [ ] Set up project structure and GitHub repository
-- [ ] Connect to API and explore raw data
-- [ ] Design database schema
+- [x] Set up project structure and GitHub repository
+- [x] Connect to API and explore raw data
+- [x] Design database schema
 - [ ] Write ETL pipeline script
 - [ ] Schedule pipeline with Airflow
 - [ ] Build interactive dashboard with Streamlit

@@ -1,13 +1,10 @@
 import os
 import time
 import requests
+from dotenv import load_dotenv
+load_dotenv()
 
-api_key = "CG-HpY9BMmfvvqA2WciR14ja1UN"
-
-# Double check that the key was actually loaded
-if not api_key:
-    print("CRITICAL ERROR: 'ALPHA_VANTAGE_API_KEY' environment variable not found.")
-    print("Please set it in your terminal or use: api_key = 'YOUR_ACTUAL_KEY'")
+api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
 
 stocks = ["AAPL", "GOOGL", "AMZN", "MSFT"]
 url = "https://www.alphavantage.co/query"
@@ -32,5 +29,4 @@ for stock in stocks:
     else:
         print("No data. Raw response:")
         print(data)
-    # Free tier safe delay
-    time.sleep(15)
+    time.sleep(15) #API has a 5 calls per minute limit
