@@ -1,8 +1,6 @@
 from db_connect import connect
-from fetch_crypto import fetch_coin_row
-from fetch_crypto import coins
-from fetch_stocks import fetch_stock_row
-from fetch_stocks import stocks
+from fetch_crypto import fetch_coin_row, coins
+from fetch_stocks import fetch_stock_row, stocks
 
 
 def load_data():
@@ -22,8 +20,6 @@ def load_data():
                 close_price = VALUES(close_price),
                 volume = VALUES(volume) 
         """, (row["ticker"], row["price_date"], row["open_price"], row["high_price"], row["low_price"], row["close_price"], row["volume"]))
-            
-    conn.commit()
 
     # Load crypto data
     for coin_id, ticker in coins.items():
@@ -41,7 +37,6 @@ def load_data():
     conn.commit()
     cursor.close()
     conn.close()
-
 
 if __name__ == "__main__":
     load_data()
