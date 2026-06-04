@@ -17,3 +17,4 @@ ticker VARCHAR(10) NOT NULL,
 PRIMARY KEY (ticker, price_date),
 FOREIGN KEY (ticker) REFERENCES Assets(ticker)
 );
+

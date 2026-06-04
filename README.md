@@ -10,8 +10,9 @@ A data engineering project that pulls daily price data for cryptocurrency and st
 
 **Stocks**
 - AAPL (Apple)
-- NVDA (NVIDIA)
+- AMZN (Amazon)
 - MSFT (Microsoft)
+- GOOGL (Google)
 
 ## Project Goals
 - Build an automated daily data pipeline
@@ -33,7 +34,7 @@ A data engineering project that pulls daily price data for cryptocurrency and st
 - [x] Set up project structure and GitHub repository
 - [x] Connect to API and explore raw data
 - [x] Design database schema
-- [ ] Write ETL pipeline script
+- [x] Write ETL pipeline script
 - [ ] Schedule pipeline with Airflow
 - [ ] Build interactive dashboard with Streamlit
 - [ ] Containerize with Docker
