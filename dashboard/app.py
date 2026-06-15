@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 load_dotenv()
 def load_data():
     conn = connect()
-    query = "SELECT p.ticker, p.price_date, p.open_price, p.high_price, p.low_price, p.close_price, p.volume FROM Prices p LEFT JOIN Assets a ON p.ticker = a.ticker ORDER BY a.asset_type ASC;"
+    query = "SELECT p.ticker, p.price_date, p.open_price, p.high_price, p.low_price, p.close_price, p.volume FROM Prices p INNER JOIN Assets a ON p.ticker = a.ticker ORDER BY a.asset_type ASC;"
     df = pd.read_sql(query, conn)
     conn.close()
     return df
