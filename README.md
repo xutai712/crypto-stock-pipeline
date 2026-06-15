@@ -27,7 +27,6 @@ A data engineering project that pulls daily price data for cryptocurrency and st
 - **dbt** — data transformation and modeling
 - **Apache Airflow** — pipeline scheduling and orchestration
 - **Docker** — containerization
-- **GCP** — cloud deployment
 - **Streamlit** — dashboard and visualization
 
 ## Roadmap
