@@ -18,9 +18,11 @@ def load_data():
     conn.close()
     return df
 def main():
-    st.title("Market Dashboard")
+    st.title("Market Dashboard")  
     df = load_data()
-    tab1, tab2 = st.tabs(["Price Over Time", "Daily Summary"])
+    st.dataframe(df) 
+    tab1, tab2 = st.tabs(["Price Over Time", "Daily Summary"]) 
+    #Gives the user two different views of the data
     with tab1:
         st.subheader("Price Over Time")
     with tab2:
