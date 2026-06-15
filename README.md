@@ -22,12 +22,12 @@ A data engineering project that pulls daily price data for cryptocurrency and st
 - Deploy the full pipeline to the cloud
 
 ## Planned Tech Stack
-- **Python** — data fetching and pipeline scripting
-- **MySQL** — database storage
-- **dbt** — data transformation and modeling
-- **Apache Airflow** — pipeline scheduling and orchestration
-- **Docker** — containerization
-- **Streamlit** — dashboard and visualization
+- **Python** - data fetching and pipeline scripting
+- **MySQL** - database storage
+- **dbt** - data transformation and modeling
+- **Apache Airflow** - pipeline scheduling and orchestration
+- **Docker** - containerization
+- **Streamlit** - dashboard and visualization
 
 ## Roadmap
 - [x] Set up project structure and GitHub repository
