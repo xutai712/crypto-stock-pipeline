@@ -7,6 +7,7 @@ import sys
 sys.path.append("pipeline")
 from db_connect import connect
 from dotenv import load_dotenv
+import plotly.express as px
 
 
 load_dotenv()
@@ -19,6 +20,11 @@ def load_data():
 def main():
     st.title("Market Dashboard")
     df = load_data()
-    st.dataframe(df)   
+    tab1, tab2 = st.tabs(["Price Over Time", "Daily Summary"])
+    with tab1:
+        st.subheader("Price Over Time")
+    with tab2:
+        st.subheader("Daily Summary")
+    
 if __name__ == "__main__":    main()    
 
