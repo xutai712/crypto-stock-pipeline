@@ -1,3 +1,4 @@
+import datetime
 import os
 import time
 import requests
@@ -33,6 +34,36 @@ def fetch_stock_row(stock):
         "close_price": float(latest_data["4. close"]),
         "volume": int(latest_data["5. volume"])
     }
+
+
+
+def fetch_stock_history(stock):
+    #Fetches OHLCV data from Jan 1st 2026 to now for a given stock from Alpha Vantage and returns a list of rows ready to insert into the Prices table
+    params = {
+        "function": "TIME_SERIES_DAILY",
+        "symbol": stock,
+        "outputsize": "full",
+        "apikey": api_key
+    }
+    response = requests.get(url, params=params)
+    response.raise_for_status()
+    data = response.json()
+    time_series = data.get("Time Series (Daily)", {})
+
+    start_date = datetime.date(2026, 1, 1)
+    rows = []
+    for date_str, daily_data in time_series.items():
+        if datetime.date.fromisoformat(date_str) >= start_date:
+            rows.append({
+                "ticker": stock,
+                "price_date": date_str,
+                "open_price": float(daily_data["1. open"]),
+                "high_price": float(daily_data["2. high"]),
+                "low_price": float(daily_data["3. low"]),
+                "close_price": float(daily_data["4. close"]),
+                "volume": int(daily_data["5. volume"])
+            })
+    return rows
 
 if __name__ == "__main__":
     for stock in stocks:

@@ -20,14 +20,15 @@ def load_data():
 def main():
     st.title("Market Dashboard")  
     df = load_data()
+    ticker = st.selectbox("Select Ticker", sorted(df["ticker"].unique()))
     tab1, tab2 = st.tabs(["Price Over Time", "Daily Summary"]) 
     #Gives the user a graph to view the price history of each asset
     with tab1:
         st.subheader("Price Over Time")
-        ticker = st.selectbox("Select Ticker", sorted(df["ticker"].unique()))
         filtered = df[df["ticker"] == ticker].sort_values("price_date")
         fig = px.line(filtered, x="price_date", y="close_price", title=f"{ticker} Close Price")
         st.plotly_chart(fig, use_container_width=True)
     with tab2:
-        st.dataframe(df) 
+        filtered = df[df["ticker"] == ticker].sort_values("price_date")
+        st.dataframe(filtered, hide_index=True) 
 if __name__ == "__main__":    main()    
