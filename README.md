@@ -19,6 +19,7 @@ A data engineering project that pulls daily price data for cryptocurrency and st
 - Store clean, structured data in a database
 - Transform and model data using dbt
 - Display insights in an interactive dashboard
+- Backfill data from 2026-01-01 to date
 - Deploy the full pipeline to the cloud
 
 ## Planned Tech Stack
