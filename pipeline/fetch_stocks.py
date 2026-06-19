@@ -48,7 +48,15 @@ def fetch_stock_history(stock):
     response = requests.get(url, params=params)
     response.raise_for_status()
     data = response.json()
+
+    # Alpha Vantage returns a "Note" or "Information" key instead of data when rate-limited
+    if "Note" in data or "Information" in data:
+        msg = data.get("Note") or data.get("Information")
+        raise RuntimeError(f"Alpha Vantage rate limit hit for {stock}: {msg}")
+
     time_series = data.get("Time Series (Daily)", {})
+    if not time_series:
+        raise RuntimeError(f"No data returned for {stock}. Response keys: {list(data.keys())}")
 
     start_date = datetime.date(2026, 1, 1)
     rows = []
