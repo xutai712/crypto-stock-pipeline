@@ -36,5 +36,5 @@ A data engineering project that pulls daily price data for cryptocurrency and st
 - [x] Design database schema
 - [x] Write ETL pipeline script
 - [x] Build interactive dashboard with Streamlit
-- [ ] Schedule pipeline with Airflow
-- [ ] Containerize with Docker
+- [x] Schedule pipeline with Airflow
+- [x] Containerize with Docker
