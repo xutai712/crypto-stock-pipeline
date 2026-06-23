@@ -39,10 +39,11 @@ def fetch_stock_row(stock):
 
 def fetch_stock_history(stock):
     #Fetches OHLCV data from Jan 1st 2026 to now for a given stock from Alpha Vantage and returns a list of rows ready to insert into the Prices table
+    # Note: outputsize=full is a premium-only feature on Alpha Vantage's free tier,
+    # so we use the default "compact" (last 100 daily points), which covers Jan 1 to now.
     params = {
         "function": "TIME_SERIES_DAILY",
         "symbol": stock,
-        "outputsize": "full",
         "apikey": api_key
     }
     response = requests.get(url, params=params)
