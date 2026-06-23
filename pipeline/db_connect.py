@@ -6,7 +6,7 @@ load_dotenv()
 # Return SQL connector
 def connect():
     return mysql.connector.connect(
-            host = "localhost",  
+            host = os.getenv("SQL_HOST", "localhost"),
             user = "root",
             password = os.getenv("SQL_PASSWORD"),
             database = "market_dashboard"

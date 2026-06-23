@@ -35,8 +35,6 @@ def fetch_stock_row(stock):
         "volume": int(latest_data["5. volume"])
     }
 
-
-
 def fetch_stock_history(stock):
     #Fetches OHLCV data from Jan 1st 2026 to now for a given stock from Alpha Vantage and returns a list of rows ready to insert into the Prices table
     # Note: outputsize=full is a premium-only feature on Alpha Vantage's free tier,
@@ -49,7 +47,6 @@ def fetch_stock_history(stock):
     response = requests.get(url, params=params)
     response.raise_for_status()
     data = response.json()
-
     # Alpha Vantage returns a "Note" or "Information" key instead of data when rate-limited
     if "Note" in data or "Information" in data:
         msg = data.get("Note") or data.get("Information")

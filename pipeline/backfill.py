@@ -1,14 +1,11 @@
 # pipeline/backfill.py
 # Run with: python pipeline/backfill.py
-
 import sys
 import time
 sys.path.append("pipeline")
-
 from db_connect import connect
 from fetch_crypto import fetch_ohlc_history, coins
 from fetch_stocks import fetch_stock_history, stocks
-
 
 INSERT_SQL = """
     INSERT INTO Prices (ticker, price_date, open_price, high_price, low_price, close_price, volume)
@@ -20,8 +17,6 @@ INSERT_SQL = """
         close_price = VALUES(close_price),
         volume = VALUES(volume)
 """
-
-
 def row_to_tuple(row):
     return (
         row["ticker"],
@@ -32,12 +27,9 @@ def row_to_tuple(row):
         row["close_price"],
         row["volume"]
     )
-
-
 def backfill():
     conn = connect()
     cursor = conn.cursor()
-
     try:
         # --- Stocks ---
         print("Backfilling stocks...")
@@ -50,7 +42,6 @@ def backfill():
             print(f"  Inserted {len(rows)} rows for {stock}")
             if i < len(stocks) - 1:
                 time.sleep(15)  # Alpha Vantage free tier: 5 calls/min
-
         # --- Crypto ---
         print("Backfilling crypto...")
         coin_items = list(coins.items())
@@ -63,13 +54,10 @@ def backfill():
             print(f"  Inserted {len(rows)} rows for {ticker}")
             if i < len(coin_items) - 1:
                 time.sleep(2)
-
     finally:
         cursor.close()
         conn.close()
-
     print("Backfill complete.")
-
-
+    
 if __name__ == "__main__":
     backfill()

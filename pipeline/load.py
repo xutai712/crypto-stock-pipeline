@@ -3,11 +3,9 @@ from fetch_crypto import fetch_coin_row, coins
 from fetch_stocks import fetch_stock_row, stocks
 import time
 
-
 def load_data():
     conn = connect()
     cursor = conn.cursor()
-
     # Load stock data
     for stock in stocks:
         row = fetch_stock_row(stock)

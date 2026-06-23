@@ -9,7 +9,6 @@ from db_connect import connect
 from dotenv import load_dotenv
 import plotly.express as px
 
-
 load_dotenv()
 def load_data():
     conn = connect()
