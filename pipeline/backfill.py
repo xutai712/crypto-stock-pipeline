@@ -1,5 +1,3 @@
-# pipeline/backfill.py
-# Run with: python pipeline/backfill.py
 import sys
 import time
 sys.path.append("pipeline")
@@ -31,33 +29,27 @@ def backfill():
     conn = connect()
     cursor = conn.cursor()
     try:
-        # --- Stocks ---
-        print("Backfilling stocks...")
+        #Backfill for Stocks
         for i, stock in enumerate(stocks):
-            print(f"  Fetching {stock}...")
             rows = fetch_stock_history(stock)
             for row in rows:
                 cursor.execute(INSERT_SQL, row_to_tuple(row))
             conn.commit()
-            print(f"  Inserted {len(rows)} rows for {stock}")
             if i < len(stocks) - 1:
                 time.sleep(15)  # Alpha Vantage free tier: 5 calls/min
-        # --- Crypto ---
-        print("Backfilling crypto...")
+        #Backfill for Crypto
         coin_items = list(coins.items())
         for i, (coin_id, ticker) in enumerate(coin_items):
-            print(f"  Fetching {ticker}...")
             rows = fetch_ohlc_history(coin_id)
             for row in rows:
                 cursor.execute(INSERT_SQL, row_to_tuple(row))
             conn.commit()
-            print(f"  Inserted {len(rows)} rows for {ticker}")
             if i < len(coin_items) - 1:
-                time.sleep(2)
+                time.sleep(2) #Due to free API Key I need to have a delay
     finally:
         cursor.close()
         conn.close()
     print("Backfill complete.")
-    
+
 if __name__ == "__main__":
     backfill()

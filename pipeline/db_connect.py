@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-# Return SQL connector
+#Return SQL connector
 def connect():
     return mysql.connector.connect(
             host = os.getenv("SQL_HOST", "localhost"),

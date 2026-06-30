@@ -27,6 +27,7 @@ def main():
         filtered = df[df["ticker"] == ticker].sort_values("price_date")
         fig = px.line(filtered, x="price_date", y="close_price", title=f"{ticker} Close Price")
         st.plotly_chart(fig, use_container_width=True)
+    #Just a table of the daily summary of the selected asset
     with tab2:
         filtered = df[df["ticker"] == ticker].sort_values("price_date")
         st.dataframe(filtered, hide_index=True) 

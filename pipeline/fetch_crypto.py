@@ -12,9 +12,9 @@ coins = {
     "ripple": "XRP",
     "stellar": "XLM"
 }
-
+#Two fetch functions are needed due to CoinGecko
 def fetch_ohlc(coin_id):
-    # Fetches Open, High, Low, Close data for a given coin from CoinGecko API
+    #Fetches Open, High, Low, Close data for a given coin from CoinGecko API
     url = f"https://api.coingecko.com/api/v3/coins/{coin_id}/ohlc"
     params = {
         "vs_currency": "usd",
@@ -23,7 +23,7 @@ def fetch_ohlc(coin_id):
     }
     response = requests.get(url, params=params)
     response.raise_for_status()
-    return response.json()  # Fix: was missing return
+    return response.json() 
 
 def fetch_volume(coin_id):
     #Fetches total volume data for a given coin from CoinGecko API
@@ -39,12 +39,11 @@ def fetch_volume(coin_id):
     return data["total_volumes"][-1][1]
 
 def fetch_coin_row(coin_id, ticker):
-    '''Assembles a single price row for a coin, ready to insert into the Prices table'''
     ohlc_data = fetch_ohlc(coin_id)
     volume = fetch_volume(coin_id)
-    latest = ohlc_data[-1]  # Most recent OHLC data point
+    latest = ohlc_data[-1]  #Most recent OHLC data point
     timestamp, open_price, high_price, low_price, close_price = latest
-    # CoinGecko returns Unix milliseconds — convert to a date string for MySQL
+    #CoinGecko returns Unix milliseconds — convert to a date string for MySQL
     price_date = datetime.fromtimestamp(timestamp / 1000, tz=timezone.utc).strftime("%Y-%m-%d")
     return {
         "ticker": ticker,
@@ -57,9 +56,7 @@ def fetch_coin_row(coin_id, ticker):
     }
 
 def fetch_volume_history(coin_id):
-    """Fetches historical daily volume for a coin. Returns a dict of {date_str: volume}.
-    market_chart with days>90 returns daily granularity, so 180 days covers Jan 1 to now.
-    """
+    #Backfill volume data back to January 2026, Due to free APIs it grabs historical data in 3 day increments
     url = f"https://api.coingecko.com/api/v3/coins/{coin_id}/market_chart"
     params = {
         "vs_currency": "usd",
@@ -69,16 +66,14 @@ def fetch_volume_history(coin_id):
     response = requests.get(url, params=params)
     response.raise_for_status()
     data = response.json()
-
     volume_by_date = {}
     for timestamp, volume in data["total_volumes"]:
         date_str = datetime.fromtimestamp(timestamp / 1000, tz=timezone.utc).strftime("%Y-%m-%d")
         volume_by_date[date_str] = int(volume)
-
     return volume_by_date
 
 def _fetch_ohlc_window(coin_id, days):
-    """Fetches one OHLC window. Free tier returns daily candles only for days<=90."""
+     #Backfill OHLC data back to January 2026, Due to free APIs it grabs historical data in 3 day increments
     url = f"https://api.coingecko.com/api/v3/coins/{coin_id}/ohlc"
     params = {
         "vs_currency": "usd",
@@ -90,15 +85,10 @@ def _fetch_ohlc_window(coin_id, days):
     return response.json()
 
 def fetch_ohlc_history(coin_id):
-    """Fetches daily OHLCV rows for a coin back to Jan 1, 2026.
-    CoinGecko free tier only returns daily OHLC for days<=90, so we make two
-    back-to-back 90-day calls and merge by date (deduplicating).
-    """
     volume_by_date = fetch_volume_history(coin_id)
-    # Free tier limitation: days<=90 returns daily candles; days=180 returns weekly.
-    # Strategy: fetch days=90 first (daily, recent ~90 days), then days=180 (weekly,
-    # covers back to Jan 1) and skip dates already seen. Result: daily for recent
-    # data, weekly for Jan–Mar where daily isn't available on the free tier.
+    #Free tier limitation: days<=90 returns daily candles; days=180 returns weekly.
+    #So fetch days=90 first (daily, recent ~90 days), then days=180 (weekly,
+    #Covers back to Jan 1) and skip dates already seen.
     seen_dates = set()
     rows = []
     for days in [90, 180]:
