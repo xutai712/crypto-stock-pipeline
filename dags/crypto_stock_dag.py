@@ -9,7 +9,7 @@ from load import load_data
 with DAG(
     dag_id = "crypto_stock_pipeline",
     start_date = datetime(2026, 6, 1),
-    schedule = "0 11 * * *",
+    schedule = "0 11 * * *", #Run daily at 11am UTC or 6am CST
     catchup = False,
 ) as dag:
     load_prices = PythonOperator(
