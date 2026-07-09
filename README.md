@@ -18,29 +18,26 @@ A data engineering project that pulls daily price data for cryptocurrency and st
  
 ```mermaid
 flowchart LR
-    API[Market Data API] -->|extract| P[Pipeline container<br/>Python ETL]
-    P -->|load| M[(MySQL<br/>warehouse)]
-    M --> D[dbt<br/>transformations]
-    D --> M
-    M --> S[Streamlit dashboard<br/>Plotly charts]
-    A[Airflow<br/>scheduler] -->|triggers daily| P
-    A --- PG[(Postgres<br/>Airflow metadata)]
+    CG[CoinGecko API] -->|extract| P[ETL<br/>Python Container]
+    AV[Alpha Vantage API] -->|extract| P
+    P -->|load raw OHLCV| M[(MySQL<br/>Warehouse)]
+    AV2[Airflow<br/>Scheduler] -->|triggers daily| P
+    M -->|query| S[Streamlit dashboard<br/>Plotly charts]
+    AV2 --- PG[(Postgres<br/>Airflow Metadata)]
 ```
 
 ## Deployment: Docker → Proxmox Homelab
-The project was built and containerized locally on macOS, then lifted onto a Proxmox VE server (Dell OptiPlex 3090) where it runs 24/7 as a live pipeline. Because the entire stack is defined in Docker Compose, migrating from the laptop to the homelab required no application changes — the same compose file runs in both environments.
+The project was built and containerized locally on macOS, then lifted onto a Proxmox VE server (Dell OptiPlex 3090) where it runs 24/7 as a live pipeline. Because the entire stack is defined in Docker Compose, migrating from the laptop to the homelab required no application changes - the same compose file runs in both environments.
 
 ## Project Goals
 - Build an automated daily data pipeline
 - Store clean, structured data in a database
-- Transform and model data using dbt
 - Display insights in an interactive dashboard
 - Backfill data from 2026-01-01 to date
 
 ## Tech Stack
 - **Python** — Extraction and pipeline logic
 - **MySQL** — Warehouse storage
-- **dbt** — Transformation and modeling
 - **Apache Airflow** — Daily scheduling and orchestration
 - **Docker / Docker Compose** — Containerization and environment parity
 - **Proxmox VE** — Self-hosted virtualization for always-on deployment
